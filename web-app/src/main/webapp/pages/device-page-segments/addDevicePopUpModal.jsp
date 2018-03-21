@@ -28,6 +28,11 @@
                            name="deviceDesc" id="deviceDesc"
                            class="form-control"/>
                 </div>
+                <div class="form-group" style="padding-left: 10%; padding-right: 10%;">
+                    <input type="text" value="" placeholder="Device Group"
+                           name="deviceGroup" id="deviceGroup"
+                           class="form-control"/>
+                </div>
                 <div id="inputMapId"></div>
             </form>
             <div class="modal-footer">

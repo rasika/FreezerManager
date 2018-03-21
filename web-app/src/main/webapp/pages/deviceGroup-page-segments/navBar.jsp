@@ -2,15 +2,10 @@
     <ul class="nav nav-tabs" data-tabs="tabs">
         <li class="active" id="tableViewTab">
             <a href="#tableview" data-toggle="tab">
-                <i class="material-icons">access_alarms</i> Table view
+                <i class="material-icons">access_alarms</i>Group Summary
                 <div class="ripple-container"></div>
             </a>
         </li>
-        <li class="" id="groupViewTab">
-            <a href="#groupView" data-toggle="tab">
-                <i class="material-icons">group_work</i> Group view
-                <div class="ripple-container"></div>
-            </a>
         </li>
         <li class="" id="mapViewTab">
             <a href="#mapView" data-toggle="tab">

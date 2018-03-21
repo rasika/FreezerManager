@@ -37,7 +37,7 @@
     String deviceType="FreezerManager";
     String id = request.getParameter("id");
     if (id == null) {
-        //  response.sendRedirect("devices.jsp");
+        // response.sendRedirect("devices.jsp");
         return;
     }
 

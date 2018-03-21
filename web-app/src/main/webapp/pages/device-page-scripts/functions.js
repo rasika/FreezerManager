@@ -4,7 +4,6 @@ function getDevice(dev, index, lat, long) {
     var devicesListing = $('#devices-listing');
 
     var lastKnownSuccess = function (data) {
-        console.log(data);
         var records = JSON.parse(data);
         var record = JSON.parse(data).records[4];
 
@@ -135,8 +134,26 @@ function addToMap(dev, index, lat, long) {
 
 }
 
+function addGroup(groupID) {
+    var groupListing = $('#group-listing');
+    if(groupID === 'undefined' || groupID ===null) {
+        console.log('group ID not defined.');
+    }
+    else{
+        if (($.inArray(groupID, groupRows)) === -1) {
+            var myRow;
+            myRow = "<tr onclick=\"window.location.href='deviceGroups.jsp?id=" + groupID + "'\"><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">dock</i> </div> <div class=\"card-content\"> <p class=\"category\">Device</p> <h3 class=\"title\" >" + groupID + "</h3> </div> </div>\n"
+                + "</td></tr>";
+
+            groupRows.push(groupID);
+            groupListing.find('tbody').append(myRow);
+        }
+    }
+}
+
 function getAllDevices() {
     var success = function (data) {
+        var groupListing = $('#group-listing');
         devices = JSON.parse(data).devices;
         deviceCount = JSON.parse(data).count;//find the number of devices
         //used bootpag library to implement the pagination
@@ -154,10 +171,11 @@ function getAllDevices() {
             getDevices(offset, limit);
         });
         var i;
+        groupListing.find('tbody').empty();
         for (i = 0; i < devices.length; i++) {
-            addToMap(devices[i], i, devices[i].properties[0].value, devices[i].properties[1].value);
-
-        }
+            addToMap(devices[i], i, devices[i].properties[1].value, devices[i].properties[2].value);
+            addGroup( devices[i].properties[0].value);
+            }
     };
     $.ajax({
         type: "POST",
@@ -171,6 +189,7 @@ function addNewDevice() {
     var deviceId = $("#deviceId").val();
     var deviceName = $("#deviceName").val();
     var deviceDesc = $("#deviceDesc").val();
+    var deviceGroup = $("#deviceGroup").val();
 
     var success = function (data) {
         var config = {};
@@ -212,7 +231,7 @@ function addNewDevice() {
         + "\"description\": \"" + deviceDesc + "\",\n"
         + "\"type\": \""+deviceType+"\",\n"
         + "\"enrolmentInfo\": {\"status\": \"ACTIVE\", \"ownership\": \"BYOD\"},\n"
-        + "\"properties\": [{name: \"latitude\", value:\"" + lat + "\"}, {name: \"longitude\", value: \"" + lng + "\"}]\n"
+        + "\"properties\": [{name: \"latitude\", value:\"" + lat + "\"}, {name: \"longitude\", value: \"" + lng + "\"},{name: \"groupID\", value: \"" + deviceGroup + "\"}]\n"
         + "}";
     $.ajax({
         type: "POST",

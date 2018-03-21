@@ -78,9 +78,13 @@
                                 <div id="tableview" class="tab-pane fade in active" style>
                                     <%@ include file="pages/device-page-segments/tableTab.jsp" %>
                                 </div>
+                                <div id="groupView" class="tab-pane fade  ">
+                                    <%@ include file="pages/device-page-segments/groupTab.jsp" %>
+                                </div>
                                 <div id="mapView" class="tab-pane fade  ">
                                     <%@ include file="pages/device-page-segments/mapTab.jsp" %>
                                 </div>
+
                             </div>
                         </div>
 
