@@ -66,7 +66,10 @@
                                 </table>
                             </div>
                             <div class="tab-content">
-                                <div id="tableview" class="tab-pane fade in active" style>
+                                <div id="groupView" class="tab-pane fade in active ">
+                                    <%@ include file="pages/deviceGroup-page-segments/groupSummary.jsp" %>
+                                </div>
+                                <div id="tableview" class="tab-pane fade " >
                                     <%@ include file="pages/deviceGroup-page-segments/tableTab.jsp" %>
                                 </div>
                                 <div id="mapView" class="tab-pane fade  ">
@@ -144,7 +147,7 @@
 
     function getAllDevices() {
         var success = function (data) {
-            var groupListing = $('#group-listing');
+            console.log(data);
             devices = JSON.parse(data).devices;
             deviceCount = JSON.parse(data).count;//find the number of devices
             //used bootpag library to implement the pagination
@@ -162,11 +165,19 @@
                 getDevices(offset, limit);
             });
             var i;
-            groupListing.find('tbody').empty();
+
             for (i = 0; i < devices.length; i++) {
-                if("<%=id%>" === devices[i].properties[0].value){
+                if("<%=id%>" === devices[i].properties[0].value){//check if the device is in the specific group
                     addToMap(devices[i], i, devices[i].properties[1].value, devices[i].properties[2].value);
                     devicesTemp.push(devices[i]);
+                    if(devices[i].enrolmentInfo.status==='ACTIVE'){//active devices
+                        activeDevices.push(devices[i]);
+
+                    }else{
+
+                        inactiveDevices.push(devices[i]);
+                    }
+
                 }
 
             }
@@ -183,13 +194,32 @@
         var getsuccess = function (data) {
             deviceCount = JSON.parse(data).count;//find the number of devices
             var devicesListing = $('#devices-listing');
+            var activeDevicesListing=$('#active-devices');
+            var inactiveDevicesListing=$('#inactive-devices');
+            var myRow;
             if (devicesTemp && devicesTemp.length > 0) {
                 devicesListing.find('tbody').empty();
                 getDevice(devicesTemp[0], 0, devicesTemp[0].properties[0].value, devicesTemp[0].properties[1].value);
             } else {
-                var myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
+               myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
                 devicesListing.find('tbody').replaceWith(myRow);
             }
+
+            if (activeDevices && activeDevices.length > 0) {
+                activeDevicesListing.find('tbody').empty();
+            } else {
+                myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
+                activeDevicesListing.find('tbody').replaceWith(myRow);
+            }
+
+            if (inactiveDevices && inactiveDevices.length > 0) {
+                inactiveDevicesListing.find('tbody').empty();
+
+            } else {
+                 myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
+                inactiveDevicesListing.find('tbody').replaceWith(myRow);
+            }
+
 
         };
         $.ajax({
@@ -205,11 +235,12 @@
 
     function getDevice(dev, index, lat, long) {
         var devicesListing = $('#devices-listing');
+        var activeDevicesListing=$('#active-devices');
+        var inactiveDevicesListing=$('#inactive-devices');
 
         var lastKnownSuccess = function (data) {
-
             var records = JSON.parse(data);
-            var record = JSON.parse(data).records[4];
+            var record = JSON.parse(data).records[0];
 
             var parameterOne = null;
             var parameterTwo = null;
@@ -222,12 +253,15 @@
             }
 
             var myRow;
+            var activeRow;
+            var inactiveRow;
             if (parameterOne == null || parameterTwo == null || parameterThree == null) {
                 myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">dock</i> </div> <div class=\"card-content\"> <p class=\"category\">Device</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                     + "</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalParameterOneChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterTwoChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterThreeChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\">N/A</h4><p class=\"category\" id=\"historicalparameterThreeAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
                     + "</a></tr>";
+
             }
             else {
                 myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">dock</i> </div> <div class=\"card-content\"> <p class=\"category\">Device</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
@@ -235,6 +269,8 @@
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalParameterOneChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterOne)+ (units1) + "</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterTwoChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterTwo) +(units2)+ "</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterThreeChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterThree)+ (units3)+ "</h4><p class=\"category\" id=\"historicalparameterThreeAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
                     + "</a></tr>";
+
+
             }
             rows.push(myRow);
 
@@ -278,6 +314,7 @@
 
 </script>
 <script src="pages/deviceGroup-page-scripts/mapViewJs.js" type="text/javascript"></script>
+<script src="pages/deviceGroup-page-scripts/summaryMap.js" type="text/javascript"></script>
 <script src="pages/deviceGroup-page-scripts/tableCharts.js" type="text/javascript"></script>
 <script src="pages/deviceGroup-page-scripts/functions.js" type="text/javascript"></script>
 </html>

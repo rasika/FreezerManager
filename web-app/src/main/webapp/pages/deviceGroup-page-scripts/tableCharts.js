@@ -1,6 +1,7 @@
 var devices = [];
 var rows = []
 var groupRows=[];
+
 var deviceCount;
 var ParameterOne = [];
 var ParameterTwo = [];

@@ -1,11 +1,16 @@
 <div class="nav-tabs-wrapper">
     <ul class="nav nav-tabs" data-tabs="tabs">
-        <li class="active" id="tableViewTab">
-            <a href="#tableview" data-toggle="tab">
-                <i class="material-icons">access_alarms</i>Group Summary
+        <li class="active" id="groupViewTab">
+            <a href="#groupView" data-toggle="tab">
+                <i class="material-icons">map</i> Group Summary
                 <div class="ripple-container"></div>
             </a>
         </li>
+        <li class="" id="tableViewTab">
+            <a href="#tableview" data-toggle="tab">
+                <i class="material-icons">access_alarms</i>Table View
+                <div class="ripple-container"></div>
+            </a>
         </li>
         <li class="" id="mapViewTab">
             <a href="#mapView" data-toggle="tab">

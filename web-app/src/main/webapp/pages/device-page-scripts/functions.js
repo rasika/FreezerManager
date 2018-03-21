@@ -153,6 +153,7 @@ function addGroup(groupID) {
 
 function getAllDevices() {
     var success = function (data) {
+        console.log(data);
         var groupListing = $('#group-listing');
         devices = JSON.parse(data).devices;
         deviceCount = JSON.parse(data).count;//find the number of devices

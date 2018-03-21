@@ -1,7 +1,6 @@
 var devicesTemp = [];
-var devicesGroup=[];
-
-
+var activeDevices=[];
+var inactiveDevices=[];
 
 
 function addToMap(dev, index, lat, long) {
