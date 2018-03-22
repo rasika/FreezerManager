@@ -18,6 +18,19 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 
+//initialising the map view tab
+var mymap = L.map('mapid').setView([5.85015, 101.82129], 7);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoibGFzaGFuIiwiYSI6ImNqYmc3dGVybTFlZ3UyeXF3cG8yNGxsdzMifQ.n3QEq0-g5tVFmsQxn3JZ-A',
+    closePopupOnClick: false,
+}).addTo(mymap);
+
+legend.addTo(mymap);
+
+
 //add devices to map as popups
 function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, parameter3) {
     var popupLocation = new L.LatLng(lat, long);
@@ -34,5 +47,12 @@ function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, param
     popup = new L.Popup({maxWidth: "auto", autoPan: false, closeButton: false, closeOnClick: false});
     popup.setLatLng(popupLocation);
     popup.setContent(popupContent);
+
+    popupOne=new L.Popup({maxWidth: "auto", autoPan: false, closeButton: false, closeOnClick: false});
+    popupOne.setLatLng(popupLocation);
+    popupOne.setContent(popupContent);
+
+    mymap.addLayer(popupOne);
     map.addLayer(popup);
+
 }

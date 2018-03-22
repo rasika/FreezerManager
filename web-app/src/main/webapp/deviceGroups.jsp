@@ -141,13 +141,13 @@
 
 
     $(document).ready(function () {
-        getDevices(0, 10);//load first page
         getAllDevices();//add all devices to map
+        getDevices(0, 10);//load first page
+
     });
 
     function getAllDevices() {
         var success = function (data) {
-            console.log(data);
             devices = JSON.parse(data).devices;
             deviceCount = JSON.parse(data).count;//find the number of devices
             //used bootpag library to implement the pagination
@@ -171,11 +171,9 @@
                     addToMap(devices[i], i, devices[i].properties[1].value, devices[i].properties[2].value);
                     devicesTemp.push(devices[i]);
                     if(devices[i].enrolmentInfo.status==='ACTIVE'){//active devices
-                        activeDevices.push(devices[i]);
-
+                        activeDevices.push(devices[i].deviceIdentifier);
                     }else{
-
-                        inactiveDevices.push(devices[i]);
+                        inactiveDevices.push(devices[i].deviceIdentifier);
                     }
 
                 }
@@ -197,13 +195,6 @@
             var activeDevicesListing=$('#active-devices');
             var inactiveDevicesListing=$('#inactive-devices');
             var myRow;
-            if (devicesTemp && devicesTemp.length > 0) {
-                devicesListing.find('tbody').empty();
-                getDevice(devicesTemp[0], 0, devicesTemp[0].properties[0].value, devicesTemp[0].properties[1].value);
-            } else {
-               myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
-                devicesListing.find('tbody').replaceWith(myRow);
-            }
 
             if (activeDevices && activeDevices.length > 0) {
                 activeDevicesListing.find('tbody').empty();
@@ -216,9 +207,19 @@
                 inactiveDevicesListing.find('tbody').empty();
 
             } else {
-                 myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
+                myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
                 inactiveDevicesListing.find('tbody').replaceWith(myRow);
             }
+
+            if (devicesTemp && devicesTemp.length > 0) {
+                devicesListing.find('tbody').empty();
+                getDevice(devicesTemp[0], 0, devicesTemp[0].properties[0].value, devicesTemp[0].properties[1].value);
+            } else {
+               myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
+                devicesListing.find('tbody').replaceWith(myRow);
+            }
+
+
 
 
         };
@@ -253,8 +254,7 @@
             }
 
             var myRow;
-            var activeRow;
-            var inactiveRow;
+
             if (parameterOne == null || parameterTwo == null || parameterThree == null) {
                 myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">dock</i> </div> <div class=\"card-content\"> <p class=\"category\">Device</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                     + "</td><td>"
@@ -270,13 +270,21 @@
                     + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterThreeChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterThree)+ (units3)+ "</h4><p class=\"category\" id=\"historicalparameterThreeAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
                     + "</a></tr>";
 
-
             }
             rows.push(myRow);
-
             devicesListing.find('tbody').append(myRow);
             initDashboardPageCharts(dev.deviceIdentifier);
             redrawGraphs(records, dev.deviceIdentifier);
+
+            if(($.inArray(dev.deviceIdentifier, activeDevices)) !== -1){//if device is active
+                myRow="<tr><td>"+dev.deviceIdentifier+"</td><td>"+parameterOne+"</td><td>"+parameterTwo+"</td><td>"+parameterThree+"</td><tr>";
+                activeDevicesListing.find('tbody').append(myRow)
+            }
+
+            if(($.inArray(dev.deviceIdentifier, inactiveDevices)) !== -1){//if device is active
+                myRow="<tr><td>"+dev.deviceIdentifier+"</td><td>"+parameterOne+"</td><td>"+parameterTwo+"</td><td>"+parameterThree+"</td><tr>";
+                inactiveDevicesListing.find('tbody').append(myRow)
+            }
 
             var newIndex = index + 1;
             if (devicesTemp.length > newIndex) {
@@ -313,7 +321,6 @@
 
 
 </script>
-<script src="pages/deviceGroup-page-scripts/mapViewJs.js" type="text/javascript"></script>
 <script src="pages/deviceGroup-page-scripts/summaryMap.js" type="text/javascript"></script>
 <script src="pages/deviceGroup-page-scripts/tableCharts.js" type="text/javascript"></script>
 <script src="pages/deviceGroup-page-scripts/functions.js" type="text/javascript"></script>

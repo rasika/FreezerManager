@@ -6,6 +6,7 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 var popup = L.popup();
+var popupOne=L.popup();
 var lat;
 var lng;
 
