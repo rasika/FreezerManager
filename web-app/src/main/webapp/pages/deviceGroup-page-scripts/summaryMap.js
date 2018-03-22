@@ -12,7 +12,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 var legend = L.control({position: 'topright'});
 legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML += '<table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>'+displayName1+'</td></tr><tr><td><i class=\"tiny material-icons\">opacity</i></td><td> '+displayName2+' </td></tr><tr><td><i class=\"tiny material-icons\" >call_made</i></td><td>'+displayName3+'</td></tr></table>';
+    div.innerHTML += '<table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>' + displayName1 + '</td></tr><tr><td><i class=\"tiny material-icons\">opacity</i></td><td> ' + displayName2 + ' </td></tr><tr><td><i class=\"tiny material-icons\" >call_made</i></td><td>' + displayName3 + '</td></tr></table>';
     return div;
 };
 legend.addTo(map);
@@ -44,11 +44,27 @@ function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, param
         parameter3 = 0;
     }
     var popupContent = "<div onclick=\"window.location.href='details.jsp?id=" + devName + "'\"><b id='weatherStation" + devId + "' >" + devName + "</b><br><table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>" + precise_round(parameter1, 3) + "</td><td><i class=\"tiny material-icons\">opacity</i></td><td>" + parameter2 + "</td><td><i class=\"tiny material-icons\" >call_made</i></td><td>" + parameter3 + "</td></table></div>";
-    popup = new L.Popup({maxWidth: "auto", autoPan: false, closeButton: false, closeOnClick: false});
+    if (($.inArray(devName, activeDevices)) !== -1) {
+        popup = new L.Popup({
+            maxWidth: "auto",
+            autoPan: false,
+            closeButton: false,
+            closeOnClick: false,
+            className: "active-popup"
+        });
+    } else {
+        popup = new L.Popup({
+            maxWidth: "auto",
+            autoPan: false,
+            closeButton: false,
+            closeOnClick: false,
+            className: "inactive-popup"
+        });
+    }
     popup.setLatLng(popupLocation);
     popup.setContent(popupContent);
 
-    popupOne=new L.Popup({maxWidth: "auto", autoPan: false, closeButton: false, closeOnClick: false});
+    popupOne = new L.Popup({maxWidth: "auto", autoPan: false, closeButton: false, closeOnClick: false});
     popupOne.setLatLng(popupLocation);
     popupOne.setContent(popupContent);
 

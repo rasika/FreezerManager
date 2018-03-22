@@ -137,8 +137,10 @@
     $("a[href='#tableview']").on('shown.bs.tab', function (e) {
         //show the search bar on table view
         $('#hide').show();
+        $(e.currentTarget.hash).find('.ct-chart').each(function (el, tab) {
+            tab.__chartist__.update();
+        });
     });
-
 
     $(document).ready(function () {
         getAllDevices();//add all devices to map
@@ -233,6 +235,12 @@
             success: getsuccess
         });
     }
+    var sumTemp=0;
+    var sumHumid=0;
+    var sumPower=0;
+    var averageTemp;
+    var averageHumid;
+    var averagePower;
 
     function getDevice(dev, index, lat, long) {
         var devicesListing = $('#devices-listing');
@@ -251,6 +259,9 @@
                 parameterOne = record.values[typepParameter1];
                 parameterTwo = record.values[typeParameter2];
                 parameterThree = record.values[typeParameter3];
+                sumTemp += parameterOne;
+                sumHumid += parameterTwo;
+                sumPower += parameterThree;
             }
 
             var myRow;
@@ -286,7 +297,22 @@
                 inactiveDevicesListing.find('tbody').append(myRow)
             }
 
+
+            if(index===(devicesTemp.length-1)){
+                averageTemp= sumTemp/ devicesTemp.length;
+                averageHumid= sumHumid/ devicesTemp.length;
+                averagePower= sumPower/ devicesTemp.length;
+
+
+                $("#card1").html("<span class=\"text-success\">" + averageTemp.toFixed(2) + " </span> "+units1);
+                $("#card2").html("<span class=\"text-success\">" + averageHumid.toFixed(2) + " </span> "+units2);
+                $("#card3").html("<span class=\"text-success\">" + averagePower.toFixed(2) + " </span> "+units3);
+                $("#card4").html("<span class=\"text-success\">" + devicesTemp.length + " </span> ");
+
+            }
+
             var newIndex = index + 1;
+
             if (devicesTemp.length > newIndex) {
                 getDevice(devicesTemp[newIndex], newIndex, devicesTemp[newIndex].properties[0].value, devicesTemp[newIndex].properties[1].value);
             }

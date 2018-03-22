@@ -89,8 +89,8 @@
 
     JSONObject device = new JSONObject(result.toString());
     JSONObject enrolmentInfo = device.getJSONObject("enrolmentInfo");
-    JSONObject lat = (JSONObject) device.getJSONArray("properties").get(0);
-    JSONObject lon = (JSONObject) device.getJSONArray("properties").get(1);
+    JSONObject lat = (JSONObject) device.getJSONArray("properties").get(1);
+    JSONObject lon = (JSONObject) device.getJSONArray("properties").get(2);
 
 %>
 

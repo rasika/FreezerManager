@@ -130,3 +130,11 @@ td {
     overflow-y: scroll;
 }
 
+.inactive-popup .leaflet-popup-content-wrapper{
+    background-color: #c12e2a;
+    color: white;
+}
+.active-popup .leaflet-popup-content-wrapper{
+    background-color: #456cc1;
+    color: white;
+}
