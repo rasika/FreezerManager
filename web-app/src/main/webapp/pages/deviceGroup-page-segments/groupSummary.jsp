@@ -49,7 +49,7 @@
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6">
-<div id="mapId" style="width: 100%; height:700px"></div>
+<div id="mapId" style="width: 100%; height:100%"></div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="row">
@@ -71,6 +71,7 @@
                             </tr>
                             </tbody>
                         </table>
+                        <div id="navActive"></div>
                     </div>
                 </div>
                 </div>
@@ -93,6 +94,7 @@
                             </tr>
                             </tbody>
                         </table>
+                        <div id="navInactive"></div>
                     </div>
                 </div>
                 </div>

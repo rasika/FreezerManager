@@ -144,7 +144,8 @@
 
     $(document).ready(function () {
         getAllDevices();//add all devices to map
-        getDevices(0, 10);//load first page
+
+
 
     });
 
@@ -166,6 +167,7 @@
                 var limit = num * 10;
                 getDevices(offset, limit);
             });
+
             var i;
 
             for (i = 0; i < devices.length; i++) {
@@ -181,6 +183,32 @@
                 }
 
             }
+
+            $('#navActive').bootpag({
+                total: Math.ceil(activeDevices.length/5),
+                page: 1,
+                maxVisible: 10,
+                href: "#pro-page-{{number}}",
+                leaps: false,
+                next: 'next',
+                prev: null
+            }).on('page', function (event, num) {
+               $('#active-devices tr').hide().slice((num-1)*10, ((num-1)*10)+10).css('display','table-row');
+            });
+
+            $('#navInactive').bootpag({
+                total: Math.ceil(inactiveDevices.length/5),
+                page: 1,
+                maxVisible: 10,
+                href: "#pro-page-{{number}}",
+                leaps: false,
+                next: 'next',
+                prev: null
+            }).on('page', function (event, num) {
+                $('#inactive-devices tr').hide().slice((num-1)*10, ((num-1)*10)+10).css('display','table-row');
+            });
+
+            getDevices(0, 10);//load first page
         };
         $.ajax({
             type: "POST",
@@ -296,9 +324,11 @@
                 myRow="<tr><td>"+dev.deviceIdentifier+"</td><td>"+parameterOne+"</td><td>"+parameterTwo+"</td><td>"+parameterThree+"</td><tr>";
                 inactiveDevicesListing.find('tbody').append(myRow)
             }
-
+            $('#active-devices tr').slice(10, activeDevices.length*2).hide();
+            $('#inactive-devices tr').slice(10,inactiveDevices.length*2).hide();
 
             if(index===(devicesTemp.length-1)){
+
                 averageTemp= sumTemp/ devicesTemp.length;
                 averageHumid= sumHumid/ devicesTemp.length;
                 averagePower= sumPower/ devicesTemp.length;

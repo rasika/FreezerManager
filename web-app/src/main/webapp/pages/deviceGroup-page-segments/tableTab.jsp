@@ -15,6 +15,6 @@
         </tr>
         </tbody>
     </table>
-    <div id="nav"></div>
+    <div id="nav1"></div>
 </div>
 

@@ -1,5 +1,5 @@
 //initialising the map view tab
-var map = L.map('mapId').setView([5.85015, 101.82129], 7);
+var map = L.map('mapId').setView([5.85015, 101.82129], 6);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
     maxZoom: 18,
@@ -30,7 +30,8 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 legend.addTo(mymap);
 
-
+var temp;
+var bound=[];
 //add devices to map as popups
 function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, parameter3) {
     var popupLocation = new L.LatLng(lat, long);
@@ -44,6 +45,8 @@ function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, param
         parameter3 = 0;
     }
     var popupContent = "<div onclick=\"window.location.href='details.jsp?id=" + devName + "'\"><b id='weatherStation" + devId + "' >" + devName + "</b><br><table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>" + precise_round(parameter1, 3) + "</td><td><i class=\"tiny material-icons\">opacity</i></td><td>" + parameter2 + "</td><td><i class=\"tiny material-icons\" >call_made</i></td><td>" + parameter3 + "</td></table></div>";
+    temp=L.latLng(lat, long);
+    bound.push(temp);
     if (($.inArray(devName, activeDevices)) !== -1) {
         popup = new L.Popup({
             maxWidth: "auto",
@@ -71,4 +74,6 @@ function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, param
     mymap.addLayer(popupOne);
     map.addLayer(popup);
 
+
+    map.fitBounds(bound);
 }

@@ -342,6 +342,7 @@
     function datePickerCallback(startD, endD) {
         chartsLoading();
         var eventsSuccess = function (data) {
+            console.log(data);
             var records = JSON.parse(data);
             analyticsHistory.redrawGraphs(records);
         };
