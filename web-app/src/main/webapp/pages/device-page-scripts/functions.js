@@ -89,7 +89,7 @@ function getDevices(offset, limit) {
         type: "POST",
         url: "invoker/execute",
         data: {
-            "uri": "/devices/?type="+deviceType+"&requireDeviceInfo=true&offset=" + offset + "&limit=" + limit,
+            "uri": "/devices/?type="+deviceType+"&requireDeviceInfo=true&offset=" + offset + "&limit=10",
             "method": "get"
         },
         success: getsuccess
@@ -153,15 +153,15 @@ function addGroup(groupID) {
 
 function getAllDevices() {
     var success = function (data) {
-        console.log(data);
         var groupListing = $('#group-listing');
         devices = JSON.parse(data).devices;
         deviceCount = JSON.parse(data).count;//find the number of devices
+        console.log(deviceCount);
         //used bootpag library to implement the pagination
         $('#nav').bootpag({
             total: Math.ceil(deviceCount / 10),
             page: 1,
-            maxVisible: 6,
+            maxVisible: Math.ceil(deviceCount / 10),
             href: "#pro-page-{{number}}",
             leaps: false,
             next: 'next',

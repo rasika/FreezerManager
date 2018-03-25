@@ -32,6 +32,9 @@ legend.addTo(mymap);
 
 var temp;
 var bound=[];
+var markers = L.markerClusterGroup();
+var markers1 = L.markerClusterGroup();
+
 //add devices to map as popups
 function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, parameter3) {
     var popupLocation = new L.LatLng(lat, long);
@@ -71,9 +74,12 @@ function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, param
     popupOne.setLatLng(popupLocation);
     popupOne.setContent(popupContent);
 
-    mymap.addLayer(popupOne);
-    map.addLayer(popup);
+ 
+    markers.addLayer(popup);
+    map.addLayer(markers);
 
+    markers1.addLayer(popupOne);
+    mymap.addLayer(markers1);
 
     map.fitBounds(bound);
 }
