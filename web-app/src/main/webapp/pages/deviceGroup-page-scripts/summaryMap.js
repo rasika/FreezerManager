@@ -74,12 +74,13 @@ function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, param
     popupOne.setLatLng(popupLocation);
     popupOne.setContent(popupContent);
 
- 
+
     markers.addLayer(popup);
     map.addLayer(markers);
+    map.fitBounds(bound);
 
     markers1.addLayer(popupOne);
     mymap.addLayer(markers1);
 
-    map.fitBounds(bound);
+
 }

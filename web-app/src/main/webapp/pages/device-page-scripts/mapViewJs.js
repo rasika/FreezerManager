@@ -1,3 +1,5 @@
+
+
 //initialising the map view tab
 var mymap = L.map('mapid').setView([5.85015, 101.82129], 7);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {

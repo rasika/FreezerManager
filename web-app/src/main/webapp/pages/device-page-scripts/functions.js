@@ -1,4 +1,5 @@
 var devicesTemp = [];
+var realTimeDevices=[];
 
 function getDevice(dev, index, lat, long) {
     var devicesListing = $('#devices-listing');
@@ -185,6 +186,51 @@ function getAllDevices() {
         success: success
     });
 }
+function addRealTimeMarkers(){
+    var success = function (data) {
+        console.log(data);
+        realTimeDevices = JSON.parse(data).devices;
+        var x;
+        for(x=0;x<realTimeDevices.length;x++){
+            console.log(realTimeDevices[x].deviceIdentifier);
+            console.log(realTimeDevices[x].properties[1].value);
+            RTMarkers[realTimeDevices[x].deviceIdentifier]=L.marker([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]).addTo(realTimeMap);
+            RTMarkers[realTimeDevices[x].deviceIdentifier].bindPopup("<b>"+realTimeDevices[x].deviceIdentifier+"</b>").openPopup();
+        }
+    };
+    $.ajax({
+        type: "POST",
+        url: "invoker/execute",
+        data: {"uri": "/devices/?type=tractor&requireDeviceInfo=true&offset=0&limit=100", "method": "get"},
+        success: success
+    });
+}
+function updateAllMarkers() {
+    var i;
+    for(i=0;i<realTimeDevices.length;i++){
+        updateRealTimeMarker(realTimeDevices[i].deviceIdentifier);
+    }
+
+}
+function updateRealTimeMarker(deviceid){
+    var KnownSuccess = function (data) {
+        var record = JSON.parse(data).records[0];
+        if(record) {
+            RTMarkers[deviceid].addTo(realTimeMap).setLatLng([record.values.latitude, record.values.longitude]).update();
+        }
+    };
+    $.ajax({
+        type: "POST",
+        url: "invoker/execute",
+        data: {
+            "uri": "/events/last-known/tractor/" + deviceid,
+            "method": "get"
+        },
+        success: KnownSuccess
+
+    });
+}
+
 
 function addNewDevice() {
     var deviceId = $("#deviceId").val();

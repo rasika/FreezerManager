@@ -18,6 +18,12 @@
                 <div class="ripple-container"></div>
             </a>
         </li>
+        <li class="" id="realTimeTab">
+            <a href="#realTimeView" data-toggle="tab">
+                <i class="material-icons">map</i> Map view
+                <div class="ripple-container"></div>
+            </a>
+        </li>
         <li class="dropdown pull-right">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="material-icons">person</i>

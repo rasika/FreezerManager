@@ -87,7 +87,9 @@
                                 <div id="mapView" class="tab-pane fade  ">
                                     <%@ include file="pages/device-page-segments/mapTab.jsp" %>
                                 </div>
-
+                                <div id="realTimeView" class="tab-pane fade  ">
+                                    <%@ include file="pages/device-page-segments/realTImeMapTab.jsp" %>
+                                </div>
                             </div>
                         </div>
 
@@ -115,6 +117,9 @@
         integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
         crossorigin=""></script>
 <script src="js/leaflet.markercluster.js" type="text/javascript"></script>
+<script src="js/leaflet-realtime.js" type="text/javascript"></script>
+
+
 
 <script type="text/javascript">
 
@@ -158,12 +163,17 @@
     $(document).ready(function () {
         getDevices(0, 10);//load first page
         getAllDevices();//add all devices to map
+        addRealTimeMarkers();
+       setTimeout(setInterval(updateAllMarkers, 1000),1000);
     });
+
+
 
 
 </script>
 <script src="pages/device-page-scripts/mapViewJs.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/tableCharts.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/modalMap.js" type="text/javascript"></script>
+<script src="pages/device-page-scripts/realtimemap.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/functions.js" type="text/javascript"></script>
 </html>
