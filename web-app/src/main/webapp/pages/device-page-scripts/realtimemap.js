@@ -1,6 +1,6 @@
 var RTMarkers=[];
 
-var realTimeMap = L.Map('realTimeMap').setView([5.85015, 101.82129], 7);
+var realTimeMap = L.map('realTimeMap').setView([5.85015, 101.82129], 7);
     // realtime = L.realtime('https://wanderdrone.appspot.com/', {
     //     interval: 3 * 1000
     // }).addTo(realTimeMap);

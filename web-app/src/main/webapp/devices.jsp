@@ -164,7 +164,7 @@
         getDevices(0, 10);//load first page
         getAllDevices();//add all devices to map
         addRealTimeMarkers();
-       setTimeout(setInterval(updateAllMarkers, 1000),1000);
+       setTimeout(setInterval(updateAllMarkers, 1000),3000);
     });
 
 
@@ -175,5 +175,7 @@
 <script src="pages/device-page-scripts/tableCharts.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/modalMap.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/realtimemap.js" type="text/javascript"></script>
+
 <script src="pages/device-page-scripts/functions.js" type="text/javascript"></script>
+
 </html>
