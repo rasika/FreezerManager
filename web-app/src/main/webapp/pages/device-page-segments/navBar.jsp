@@ -20,7 +20,7 @@
         </li>
         <li class="" id="realTimeTab">
             <a href="#realTimeView" data-toggle="tab">
-                <i class="material-icons">map</i> Map view
+                <i class="material-icons">location_searching</i> Real time view
                 <div class="ripple-container"></div>
             </a>
         </li>

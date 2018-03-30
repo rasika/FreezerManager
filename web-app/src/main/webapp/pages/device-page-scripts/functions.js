@@ -2,6 +2,7 @@ var devicesTemp = [];
 var realTimeDevices=[];
 var line=[];
 var polyline=[];
+var tempBounds={};
 
 function getDevice(dev, index, lat, long) {
     var devicesListing = $('#devices-listing');
@@ -191,7 +192,7 @@ function getAllDevices() {
 }
 function addRealTimeMarkers(){
     var success = function (data) {
-        console.log(data);
+        var initialBounds=[];
         realTimeDevices = JSON.parse(data).devices;
         var x;
         for(x=0;x<realTimeDevices.length;x++){
@@ -199,9 +200,13 @@ function addRealTimeMarkers(){
             console.log(realTimeDevices[x].deviceIdentifier);
             console.log(realTimeDevices[x].properties[1].value);
             RTMarkers[realTimeDevices[x].deviceIdentifier]=L.marker([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]).addTo(realTimeMap);
-            RTMarkers[realTimeDevices[x].deviceIdentifier].bindPopup("<b>"+realTimeDevices[x].deviceIdentifier+"</b>").openPopup();
+            RTMarkers[realTimeDevices[x].deviceIdentifier].bindPopup("<b>"+realTimeDevices[x].deviceIdentifier+"</b>");
             line[realTimeDevices[x].deviceIdentifier].push([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]);
+            initialBounds.push([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]);
+
+
         }
+       // realTimeMap.fitBounds(initialBounds);
     };
     $.ajax({
         type: "POST",
@@ -210,12 +215,18 @@ function addRealTimeMarkers(){
         success: success
     });
 }
+
 function updateAllMarkers() {
     var i;
+    tempBounds=[];
     for(i=0;i<realTimeDevices.length;i++){
         updateRealTimeMarker(realTimeDevices[i].deviceIdentifier);
     }
-
+    //console.log('bounds '+tempBounds);
+    if(tempBounds.length!==0) {
+        console.log('bounds '+tempBounds.length);
+        realTimeMap.fitBounds(tempBounds);
+    }
 }
 
 function updateRealTimeMarker(deviceid){
@@ -224,16 +235,19 @@ function updateRealTimeMarker(deviceid){
 
         if(record) {
             console.log(deviceid+" "+line[deviceid].length);
-            if(line[deviceid].length%10===0){
-               // realTimeMap.removeLayer(polyline[deviceid]);
-                line[deviceid]=[];
+            if(line[deviceid].length%50===0){
+                clearMap();
+                realTimeMap.removeLayer(polyline[deviceid]);
+                line[deviceid].splice(0,25);
 
             }
 
              line[deviceid].push([record.values.latitude, record.values.longitude]);
             RTMarkers[deviceid].addTo(realTimeMap).setLatLng([record.values.latitude, record.values.longitude]).update();
             polyline[deviceid]=L.polyline( line[deviceid]).addTo(realTimeMap);
-          //  realTimeMap.addLayer(polyline[deviceid]);
+            tempBounds.push([record.values.latitude, record.values.longitude]);
+            /console.log('temp'+tempBounds);
+          //realTimeMap.addLayer(polyline[deviceid]);
         }
     };
     $.ajax({
@@ -249,13 +263,13 @@ function updateRealTimeMarker(deviceid){
 }
 
 function clearMap() {
-    for(i in m._layers) {
-        if(m._layers[i]._path !== undefined) {
+    for(i in realTimeMap._layers) {
+        if(realTimeMap._layers[i]._path !== undefined) {
             try {
-                m.removeLayer(m._layers[i]);
+                realTimeMap.removeLayer(realTimeMap._layers[i]);
             }
             catch(e) {
-                console.log("problem with " + e + m._layers[i]);
+                console.log("problem with " + e + realTimeMap._layers[i]);
             }
         }
     }

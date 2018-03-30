@@ -148,6 +148,11 @@
         //hide the search bar on map view
         $('#hide').hide();
     });
+    $("a[href='#realTimeView']").on('shown.bs.tab', function (e) {
+        realTimeMap.invalidateSize();
+        //hide the search bar on map view
+        $('#hide').hide();
+    });
 
     $('#newDeviceModal').on('show.bs.modal', function () {
         setTimeout(function () {
@@ -164,6 +169,7 @@
         getDevices(0, 10);//load first page
         getAllDevices();//add all devices to map
         addRealTimeMarkers();
+        clearMap();
        setTimeout(setInterval(updateAllMarkers, 1000),3000);
     });
 
