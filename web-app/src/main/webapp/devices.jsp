@@ -56,6 +56,11 @@
 
         <div class="content" style="margin-top:5px ; padding: 0 0">
             <div class="container-fluid">
+
+                    <p  data-toggle="modal" data-target="#filter" style="  cursor:pointer;font-size: 20px; margin-left: 20px">
+                        FILTER <i class="material-icons">filter_list</i><div class="row" >
+                    </p>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-plain">
@@ -76,6 +81,7 @@
                                     </tr>
                                 </table>
                                 <%@ include file="pages/device-page-segments/addDevicePopUpModal.jsp" %>
+                                <%@ include file="pages/device-page-segments/filterModal.jsp" %>
                             </div>
                             <div class="tab-content">
                                 <div id="tableview" class="tab-pane fade in active" style>
@@ -166,11 +172,11 @@
 
 
     $(document).ready(function () {
-        getDevices(0, 10);//load first page
+        getDevices(0);//load first page
         getAllDevices();//add all devices to map
         addRealTimeMarkers();
-        clearMap();
-       setTimeout(setInterval(updateAllMarkers, 1000),3000);
+        setTimeout(setInterval(updateAllMarkers, 1000),3000);
+
     });
 
 
