@@ -55,12 +55,12 @@
     <div class="main-panel">
 
         <div class="content" style="margin-top:5px ; padding: 0 0">
-            <div class="container-fluid">
+            <%--<div class="container-fluid">--%>
 
-                    <p  data-toggle="modal" data-target="#filter" style="  cursor:pointer;font-size: 20px; margin-left: 20px">
-                        FILTER <i class="material-icons">filter_list</i><div class="row" >
-                    </p>
-                </div>
+                    <%--<p  data-toggle="modal" data-target="#filter" style="  cursor:pointer;font-size: 20px; margin-left: 20px">--%>
+                        <%--FILTER <i class="material-icons">filter_list</i><div class="row" >--%>
+                    <%--</p>--%>
+                <%--</div>--%>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-plain">

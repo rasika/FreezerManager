@@ -14,7 +14,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 var legend = L.control({position: 'topright'});
 legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML += '<table><tr><td><i class=\"tiny material-icons\" >wb_sunny</i></td><td>'+displayName1+'</td></tr><tr><td><i class=\"tiny material-icons\">opacity</i></td><td> '+displayName2+' </td></tr><tr><td><i class=\"tiny material-icons\" >call_made</i></td><td>'+displayName3+'</td></tr></table>';
+    div.innerHTML += '<table><tr><td style="width: auto"><i class=\"tiny material-icons\" >wb_sunny</i></td><td style="width: auto">'+displayName1+'</td></tr><tr><td style="width: auto"><i class=\"tiny material-icons\">opacity</i></td><td style="width: auto"> '+displayName2+' </td></tr><tr><td style="width: auto"><i class=\"tiny material-icons\" >call_made</i></td><td style="width: auto">'+displayName3+'</td></tr></table>';
     return div;
 };
 legend.addTo(mymap);
