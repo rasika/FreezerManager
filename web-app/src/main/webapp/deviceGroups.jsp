@@ -41,15 +41,7 @@
                 <strong>Device</strong>Portal
             </a>
         </div>
-        <div class="sidebar-wrapper">
-            <p class="copyright" style="position: absolute;bottom:0;padding-left: 100px">
-                &copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script>
-                <a href="https://wso2.com/iot">WSO2 Inc.</a>
-            </p>
-        </div>
+
     </div>
     <div class="main-panel">
         <div class="content" style="margin-top:5px ; padding: 0 0">

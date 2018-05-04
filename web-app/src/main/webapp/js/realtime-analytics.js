@@ -121,6 +121,50 @@ realtimeAnalytics = {
         var realtimeChartThree = new Chartist.Line('#RealTimeChartThree', dataRealtimeChartThreeChart, optionsRealtimeChartThreeChart);
         md.startAnimationForLineChart(realtimeChartThree);
 
+        ////////////////////////////////////
+        var d = new Date();
+        var ChartDataOne = [
+            // First series
+            {
+                label: "Series 1",
+                values: [ {time: d.getTime()/1000, y:0}]
+            }
+        ];
+        var chartOne =  $('#lineChart').epoch({
+            type: 'time.line',
+            data: ChartDataOne,
+            axes: [ 'bottom', 'left','right'],
+            margins: { left: 40 ,top: 50}
+        });
+
+        var ChartDataTwo = [
+            // First series
+            {
+                label: "Series 1",
+                values: [ {time: d.getTime()/1000, y:0}]
+            }
+        ];
+        var chartTwo =  $('#lineChart1').epoch({
+            type: 'time.line',
+            data: ChartDataTwo,
+            axes: [ 'bottom', 'left','right'],
+            margins: { left: 40 ,top: 50}
+        });
+
+        var ChartDataThree = [
+            // First series
+            {
+                label: "Series 1",
+                values: [ {time: d.getTime()/1000, y:0}]
+            }
+        ];
+        var chartThree =  $('#lineChart2').epoch({
+            type: 'time.line',
+            data: ChartDataThree,
+            axes: [ 'bottom', 'left','right'],
+            margins: { left: 40 ,top: 50}
+        });
+
 
 
 
@@ -185,6 +229,20 @@ realtimeAnalytics = {
                     realtimeChartThreeSeries.push(varThree);
                     $("#realtimeChartThreeLastUpdated").html(lastUpdatedText);
 
+
+                    //////////////////////////////////////////
+
+                    var newBarChartDataOne = [{x: d.getTime()/1000, y:varOne}];
+                    console.log(d.getTime());
+                    chartOne.push(newBarChartDataOne);
+
+                    var newBarChartDataTwo = [{x: d.getTime()/1000, y:varTwo}];
+                    console.log(d.getTime());
+                    chartTwo.push(newBarChartDataTwo);
+
+                    var newBarChartDataThree = [{x: d.getTime()/1000, y:varThree}];
+                    console.log(d.getTime());
+                    chartThree.push(newBarChartDataThree);
 
                     updateGraphs();
                 };

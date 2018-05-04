@@ -118,7 +118,7 @@
           crossorigin=""/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="css/updates.css" rel="stylesheet"/>
-
+    <link rel="stylesheet" type="text/css" href="css/epoch.min.css">
     <link href="css/simple-sidebar.css" rel="stylesheet">
 </head>
 
@@ -154,10 +154,6 @@
 
             <%@ include file="pages/details-page-Segments/deviceDetailsCard.jsp" %>
             <%@ include file="pages/details-page-Segments/mapSegment.jsp" %>
-
-            <div style=" position:absolute; bottom: 0;margin-left: 100px">
-                <%@ include file="pages/details-page-Segments/footerWSO2.jsp" %>
-            </div>
         </div>
 
 
@@ -183,7 +179,15 @@
                 <div class="tab-content">
                     <div id="realtime" class="tab-pane fade in active">
                         <%@ include file="pages/details-page-Segments/realTimeCardSegment.jsp" %>
-                        <%@ include file="pages/details-page-Segments/realTimeChartSegment.jsp" %>
+                        <%@ include file="pages/details-page-Segments/tab.jsp" %>
+                        <div class="tab-content">
+                            <div id="chartist" class="tab-pane fade in active">
+                                <%@ include file="pages/details-page-Segments/realTimeChartSegment.jsp" %>
+                            </div>
+                            <div id="epoch" class="tab-pane fade">
+                                <%@ include file="pages/details-page-Segments/realTImeChartSegmentEpoch.jsp" %>
+                            </div>
+                        </div>
                     </div>
                     <div id="historical" class="tab-pane fade">
                         <%@ include file="pages/details-page-Segments/historicalChartsegment.jsp" %>
@@ -219,6 +223,8 @@
 <script src="js/historical-analytics.js"></script>
 <script src="pages/details-page-scripts/functions.js"></script>
 <script src="pages/details-page-scripts/cssFunctions.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/epoch.min.js"></script>
 <script type="text/javascript">
     var lastKnown = {};
 

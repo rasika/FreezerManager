@@ -43,13 +43,6 @@
         <div class="sidebar-wrapper">
             <%@ include file="pages/device-page-segments/serachBar.jsp" %>
 
-            <p class="copyright" style="position: absolute;bottom:0;padding-left: 100px">
-                &copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script>
-                <a href="https://wso2.com/iot">WSO2 Inc.</a>
-            </p>
         </div>
     </div>
     <div class="main-panel">
@@ -105,7 +98,7 @@
             </div>
         </div>
     </div>
-</div>
+
 </body>
 <script src="js/jquery.min.js" type="text/javascript"></script>
 <script src="js/bootstrap.min.js" type="text/javascript"></script>
@@ -174,8 +167,7 @@
     $(document).ready(function () {
         getDevices(0);//load first page
         getAllDevices();//add all devices to map
-        addRealTimeMarkers();
-        setTimeout(setInterval(updateAllMarkers, 1000),3000);
+
 
     });
 
