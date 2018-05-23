@@ -140,7 +140,9 @@
     document.getElementById("prameter1").innerHTML = displayName1;
     document.getElementById("prameter2").innerHTML = displayName2;
     document.getElementById("prameter3").innerHTML = displayName3;
-
+    document.getElementById("prameter1l").innerHTML = displayName1;
+    document.getElementById("prameter2l").innerHTML = displayName2;
+    document.getElementById("prameter3l").innerHTML = displayName3;
     //fixed the issue with map not rendering in tabbed view and pop up model
     $("a[href='#mapView']").on('shown.bs.tab', function (e) {
         mymap.invalidateSize();
@@ -179,7 +181,7 @@
 <script src="pages/device-page-scripts/tableCharts.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/modalMap.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/realtimemap.js" type="text/javascript"></script>
-
+<script src="pages/device-page-scripts/tableList.js" type="text/javascript"></script>
 <script src="pages/device-page-scripts/functions.js" type="text/javascript"></script>
 
 </html>

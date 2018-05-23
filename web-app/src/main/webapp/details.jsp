@@ -247,6 +247,9 @@
     document.getElementById("title1").innerHTML = displayName1+ units1;
     document.getElementById("title2").innerHTML = displayName2+ units2;
     document.getElementById("title3").innerHTML = displayName3+ units3;
+    document.getElementById("title4").innerHTML = displayName1+ units1;
+    document.getElementById("title5").innerHTML = displayName2+ units2;
+    document.getElementById("title6").innerHTML = displayName3+ units3;
 
     document.getElementById("Htitle1").innerHTML = displayName1+ units1;
     document.getElementById("Htitle2").innerHTML = displayName2+ units2;
@@ -262,6 +265,7 @@
 
     $(document).ready(function () {
         $(document).ready(function () {
+            console.log(<%=pageContext.getServletContext().getInitParameter("websocketEndpoint")%>);
             var wsStatsEndpoint = "<%=pageContext.getServletContext().getInitParameter("websocketEndpoint")%>/secured-websocket/iot.per.device.stream.carbon.super."+deviceType+"/1.0.0?"
                 + "deviceId=<%=id%>&deviceType="+deviceType+"&websocketToken=<%=request.getSession(false).getAttribute(LoginController.ATTR_ACCESS_TOKEN)%>";
             realtimeGraphRefresh(wsStatsEndpoint);

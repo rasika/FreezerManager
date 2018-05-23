@@ -1,5 +1,5 @@
 <div class="card-content table-responsive">
-    <table class="table table-hover" id="group-listing" style="height: 100%">
+    <table class="table table-hover" id="group-listing">
         <thead>
         <th >Device Groups</th>
         </thead>

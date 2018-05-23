@@ -1,11 +1,12 @@
 var devicesTemp = [];
-var realTimeDevices=[];
-var line=[];
-var polyline=[];
-var tempBounds={};
+var realTimeDevices = [];
+var line = [];
+var polyline = [];
+var tempBounds = {};
 
 function getDevice(dev, index, lat, long) {
     var devicesListing = $('#devices-listing');
+    var devicesListingList = $('#devices-listing-listview');
 
     var lastKnownSuccess = function (data) {
         console.log(data);
@@ -33,13 +34,32 @@ function getDevice(dev, index, lat, long) {
         else {
             myRow = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">dock</i> </div> <div class=\"card-content\"> <p class=\"category\">Device</p> <h3 class=\"title\" >" + dev.name + "</h3> </div> </div>\n"
                 + "</td><td>"
-                + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalParameterOneChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterOne)+ (units1) + "</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterTwoChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterTwo) +(units2)+ "</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
-                + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterThreeChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterThree)+ (units3)+ "</h4><p class=\"category\" id=\"historicalparameterThreeAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
+                + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"red\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalParameterOneChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterOne) + (units1) + "</h4><p class=\"category\" id=\"historicalTempAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td><div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"orange\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterTwoChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterTwo) + (units2) + "</h4><p class=\"category\" id=\"historicalHumidAlert" + dev.deviceIdentifier + "\"></div></div>\n</td><td>"
+                + "<div class=\"card\"><div class=\"card-header card-chart\" data-background-color=\"green\" style=\"height: 90px;min-height: unset;\"><div class=\"ct-chart\" id=\"HistoricalparameterThreeChart" + dev.deviceIdentifier + "\"></div></div><div class=\"card-content\"><h4 class=\"title\"> " + (parameterThree) + (units3) + "</h4><p class=\"category\" id=\"historicalparameterThreeAlert" + dev.deviceIdentifier + "\"></div></div>\n</td>"
                 + "</a></tr>";
         }
         rows.push(myRow);
 
+        var myRowlist;
+        if (parameterOne == null || parameterTwo == null || parameterThree == null) {
+            myRowlist = "<tr onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td>" + dev.name + "\n"
+                + "</td><td>"
+                + "N/A\n</td><td>N/A\n</td><td>"
+                + "N/A\n</td>"
+                + "</a></tr>";
+        }
+        else {
+            myRowlist = "<tr data-type=\"selectable\" onclick=\"window.location.href='details.jsp?id=" + dev.deviceIdentifier + "'\" style='cursor: pointer'><a href='#" + dev.deviceIdentifier + "'><td>" + dev.name + "\n"
+                + "</td><td>"
+                +  (parameterOne) + (units1) + "</td><td>" + (parameterTwo) + (units2) + "\n</td><td>"
+                + (parameterThree) + (units3) + "\n</td>"
+                + "</a></tr>";
+
+        }
+        rowsList.push(myRowlist);
+
         devicesListing.find('tbody').append(myRow);
+        devicesListingList.find('tbody').append(myRowlist);
         initDashboardPageCharts(dev.deviceIdentifier);
         redrawGraphs(records, dev.deviceIdentifier);
 
@@ -67,7 +87,7 @@ function getDevice(dev, index, lat, long) {
         type: "POST",
         url: "invoker/execute",
         data: {
-            "uri": "/events/last-known/"+deviceType+"/" + devicesTemp[index].deviceIdentifier + "?limit=5",
+            "uri": "/events/last-known/" + deviceType + "/" + devicesTemp[index].deviceIdentifier + "?limit=5",
             "method": "get"
         },
         success: lastKnownSuccess
@@ -76,21 +96,21 @@ function getDevice(dev, index, lat, long) {
 
 }
 
-function getDevices(offset,filterBounds) {
+function getDevices(offset, filterBounds) {
     var getsuccess = function (data) {
         devicesTemp = JSON.parse(data).devices;
         deviceCount = JSON.parse(data).count;//find the number of devices
         var devicesListing = $('#devices-listing');
-
+        var devicesListingList = $('#devices-listing-listview');
         if (devicesTemp && devicesTemp.length > 0) {
             devicesListing.find('tbody').empty();
+            devicesListingList.find('tbody').empty();
             getDevice(devicesTemp[0], 0, devicesTemp[0].properties[0].value, devicesTemp[0].properties[1].value);
-            if(filterBounds!=null){
-                console.log('in');
-            }
+
         } else {
             var myRow = "<tr><td colspan=\"6\" style=\"padding-top: 30px;\"><strong>No Devices Found</strong></td></tr>";
             devicesListing.find('tbody').replaceWith(myRow);
+            devicesListingList.find('tbody').replaceWith(myRow);
         }
 
     };
@@ -98,7 +118,7 @@ function getDevices(offset,filterBounds) {
         type: "POST",
         url: "invoker/execute",
         data: {
-            "uri": "/devices/?type="+deviceType+"&requireDeviceInfo=true&offset=" + offset + "&limit=10",
+            "uri": "/devices/?type=" + deviceType + "&requireDeviceInfo=true&offset=" + offset + "&limit=10",
             "method": "get"
         },
         success: getsuccess
@@ -122,7 +142,7 @@ function addToMap(dev, index, lat, long) {
         }
 
         //To fix the issue of adding devices with null or undefined location values to map
-        if ((lat == null || lat === "undefined" ) || (long == null || lat === "undefined")) {
+        if ((lat == null || lat === "undefined") || (long == null || lat === "undefined")) {
             console.log('undefined lat' + lat + ' long ' + long);
         }
         else {
@@ -135,7 +155,7 @@ function addToMap(dev, index, lat, long) {
         type: "POST",
         url: "invoker/execute",
         data: {
-            "uri": "/events/last-known/"+deviceType+"/" + devices[index].deviceIdentifier,
+            "uri": "/events/last-known/" + deviceType + "/" + devices[index].deviceIdentifier,
             "method": "get"
         },
         success: KnownSuccess
@@ -146,10 +166,10 @@ function addToMap(dev, index, lat, long) {
 
 function addGroup(groupID) {
     var groupListing = $('#group-listing');
-    if(groupID === 'undefined' || groupID ===null) {
+    if (groupID === 'undefined' || groupID === null) {
         console.log('group ID not defined.');
     }
-    else{
+    else {
         if (($.inArray(groupID, groupRows)) === -1) {
             var myRow;
             myRow = "<tr onclick=\"window.location.href='deviceGroups.jsp?id=" + groupID + "'\"><td><div class=\"card card-stats\" style='width: 75%'> <div class=\"card-header\" data-background-color=\"purple\"> <i class=\"material-icons\">dock</i> </div> <div class=\"card-content\"> <p class=\"category\">Device</p> <h3 class=\"title\" >" + groupID + "</h3> </div> </div>\n"
@@ -184,35 +204,36 @@ function getAllDevices() {
 
         var i;
         groupListing.find('tbody').empty();
-            for (i = 0; i < devices.length; i++) {
-                addToMap(devices[i], i, devices[i].properties[1].value, devices[i].properties[2].value);
-                addGroup(devices[i].properties[0].value);
-            }
+        for (i = 0; i < devices.length; i++) {
+            addToMap(devices[i], i, devices[i].properties[1].value, devices[i].properties[2].value);
+            addGroup(devices[i].properties[0].value);
+        }
 
     };
     $.ajax({
         type: "POST",
         url: "invoker/execute",
-        data: {"uri": "/devices/?type="+deviceType+"&requireDeviceInfo=true&offset=0&limit=100", "method": "get"},
+        data: {"uri": "/devices/?type=" + deviceType + "&requireDeviceInfo=true&offset=0&limit=100", "method": "get"},
         success: success
     });
 }
-function addRealTimeMarkers(){
+
+function addRealTimeMarkers() {
     var success = function (data) {
-        var initialBounds=[];
+        var initialBounds = [];
         realTimeDevices = JSON.parse(data).devices;
         var x;
-        for(x=0;x<realTimeDevices.length;x++){
-            line[realTimeDevices[x].deviceIdentifier]=[];
+        for (x = 0; x < realTimeDevices.length; x++) {
+            line[realTimeDevices[x].deviceIdentifier] = [];
             console.log(realTimeDevices[x].deviceIdentifier);
             console.log(realTimeDevices[x].properties[1].value);
-            RTMarkers[realTimeDevices[x].deviceIdentifier]=L.marker([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]).addTo(realTimeMap);
-            RTMarkers[realTimeDevices[x].deviceIdentifier].bindPopup("<b>"+realTimeDevices[x].deviceIdentifier+"</b>");
+            RTMarkers[realTimeDevices[x].deviceIdentifier] = L.marker([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]).addTo(realTimeMap);
+            RTMarkers[realTimeDevices[x].deviceIdentifier].bindPopup("<b>" + realTimeDevices[x].deviceIdentifier + "</b>");
             line[realTimeDevices[x].deviceIdentifier].push([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]);
             initialBounds.push([realTimeDevices[x].properties[0].value, realTimeDevices[x].properties[1].value]);
 
-            }
-       // realTimeMap.fitBounds(initialBounds);
+        }
+        // realTimeMap.fitBounds(initialBounds);
     };
     $.ajax({
         type: "POST",
@@ -225,36 +246,36 @@ function addRealTimeMarkers(){
 
 function updateAllMarkers() {
     var i;
-    tempBounds=[];
-    for(i=0;i<realTimeDevices.length;i++){
+    tempBounds = [];
+    for (i = 0; i < realTimeDevices.length; i++) {
         updateRealTimeMarker(realTimeDevices[i].deviceIdentifier);
     }
     //console.log('bounds '+tempBounds);
-    if(tempBounds.length!==0) {
-        console.log('bounds '+tempBounds.length);
+    if (tempBounds.length !== 0) {
+        console.log('bounds ' + tempBounds.length);
         realTimeMap.fitBounds(tempBounds);
     }
 }
 
-function updateRealTimeMarker(deviceid){
+function updateRealTimeMarker(deviceid) {
     var KnownSuccess = function (data) {
         var record = JSON.parse(data).records[0];
 
-        if(record) {
+        if (record) {
 
-            if(line[deviceid].length%50===0){
+            if (line[deviceid].length % 50 === 0) {
                 clearMap();
                 realTimeMap.removeLayer(polyline[deviceid]);
-                line[deviceid].splice(0,25);
+                line[deviceid].splice(0, 25);
 
             }
 
-             line[deviceid].push([record.values.latitude, record.values.longitude]);
+            line[deviceid].push([record.values.latitude, record.values.longitude]);
             RTMarkers[deviceid].addTo(realTimeMap).setLatLng([record.values.latitude, record.values.longitude]).update();
-            polyline[deviceid]=L.polyline( line[deviceid]).addTo(realTimeMap);
+            polyline[deviceid] = L.polyline(line[deviceid]).addTo(realTimeMap);
             tempBounds.push([record.values.latitude, record.values.longitude]);
-           //console.log('temp'+tempBounds);
-          //realTimeMap.addLayer(polyline[deviceid]);
+            //console.log('temp'+tempBounds);
+            //realTimeMap.addLayer(polyline[deviceid]);
         }
     };
     $.ajax({
@@ -270,12 +291,12 @@ function updateRealTimeMarker(deviceid){
 }
 
 function clearMap() {
-    for(i in realTimeMap._layers) {
-        if(realTimeMap._layers[i]._path !== undefined) {
+    for (i in realTimeMap._layers) {
+        if (realTimeMap._layers[i]._path !== undefined) {
             try {
                 realTimeMap.removeLayer(realTimeMap._layers[i]);
             }
-            catch(e) {
+            catch (e) {
                 console.log("problem with " + e + realTimeMap._layers[i]);
             }
         }
@@ -327,7 +348,7 @@ function addNewDevice() {
         + "\"name\": \"" + deviceName + "\",\n"
         + "\"deviceIdentifier\": \"" + deviceId + "\",\n"
         + "\"description\": \"" + deviceDesc + "\",\n"
-        + "\"type\": \""+deviceType+"\",\n"
+        + "\"type\": \"" + deviceType + "\",\n"
         + "\"enrolmentInfo\": {\"status\": \"ACTIVE\", \"ownership\": \"BYOD\"},\n"
         + "\"properties\": [{name: \"latitude\", value:\"" + lat + "\"}, {name: \"longitude\", value: \"" + lng + "\"},{name: \"groupID\", value: \"" + deviceGroup + "\"}]\n"
         + "}";
@@ -339,9 +360,10 @@ function addNewDevice() {
     });
 }
 
-function incountry(){
+function incountry() {
     var countryName = $("#countryName").val();
-    var success = function (data) {console.log(data);
+    var success = function (data) {
+        console.log(data);
         // var northeast=L.latLng(data.results[0].geometry.bounds.northeast.lat,data.results[0].geometry.bounds.northeast.lng),
         //     southwest=L.latLng(data.results[0].geometry.bounds.southwest.lat,data.results[0].geometry.bounds.southwest.lng),
         //     bounds = L.latLngBounds(northeast, southwest);
@@ -358,14 +380,15 @@ function incountry(){
         //         console.log('ds');
         //     }
         // }
-        };
+    };
 
     $.ajax({
-        url: "https://maps.googleapis.com/maps/api/geocode/json?address="+countryName+"&sensor=false&key=AIzaSyBF9tC-z5NiLUlbzyLM0TQxlcrdxaNOLbs",
+        url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + countryName + "&sensor=false&key=AIzaSyBF9tC-z5NiLUlbzyLM0TQxlcrdxaNOLbs",
         type: "POST",
         success: success
     });
 }
+
 function precise_round(num, decimals) {
     var t = Math.pow(10, decimals);
     return (Math.round((num * t) + (decimals > 0 ? 1 : 0) * (Math.sign(num) * (10 / Math.pow(100, decimals)))) / t).toFixed(decimals);

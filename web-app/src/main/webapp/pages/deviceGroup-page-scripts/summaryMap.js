@@ -67,6 +67,7 @@ function addToMapPopoup(lat, long, devName, devId, parameter1, parameter2, param
             className: "inactive-popup"
         });
     }
+
     popup.setLatLng(popupLocation);
     popup.setContent(popupContent);
 
