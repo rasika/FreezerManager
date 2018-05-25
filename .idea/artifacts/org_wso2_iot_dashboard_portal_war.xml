@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="org.wso2.iot.dashboard.portal:war">
-    <output-path>$PROJECT_DIR$/classes/artifacts/org_wso2_iot_dashboard_portal_war</output-path>
-    <root id="archive" name="org.wso2.iot.dashboard.portal_war.war">
-      <element id="artifact" artifact-name="org.wso2.iot.dashboard.portal:war exploded" />
-    </root>
-  </artifact>
-</component>
