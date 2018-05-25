@@ -161,8 +161,6 @@ public class ConfigController extends HttpServlet {
             return null;
         }
         HttpResponse response = client.execute(post);
-        System.out.println("Response Code : "
-                + response.getStatusLine().getStatusCode());
 
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF8"));
 
@@ -202,7 +200,7 @@ public class ConfigController extends HttpServlet {
         }
     }
 
-    String sanitize(String url) throws EncodingException {
+    private String sanitize(String url) throws EncodingException {
 
         Encoder encoder = new DefaultEncoder(new ArrayList<String>());
         //first canonicalize
